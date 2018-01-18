@@ -1,0 +1,70 @@
+#%RAML 0.8
+---
+title: Next Best Question bpfb API
+baseUri: https://datascience/nbq/{version}
+version: v0
+mediaType: application/json
+
+/most-probable-questions:
+  /{customerId}:
+    description: krijg een lijst van meest waarschijnlijke vraagonderwerpen terug van een specifieke klant
+    uriParameters:
+      customerId:
+        displayName: klantidentificatie
+        type: string
+        description: De klantidentificatie van een klant
+        example: "410145831"
+        required: true
+        minLength: 9
+        maxLength: 9
+    get:
+     headers:
+      X-Auth-Token:
+        required: true
+        type: string
+        description: de token die je krijgt wanneer je succesvol ingelogt hebt
+        example: "886c219db12cd1748c0c051131ea087cf2a24478-1511260332390-1"
+        minLength: 56
+     responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "questions":["17","14","5","22","15","4","31","16","18","2","21","13","19","3","9","27","20","1","28","11","30","6","12","10","23","7","26","29","24","8","25"]
+                }
+        403:
+          body:
+            application/string:
+              example: "Invalid token."
+        404:
+          body:
+            application/string:
+              example: "Not found."
+/login:
+  description:
+  get:
+    headers:
+      user:
+        required: true
+        type: string
+        description: De gebruikersnaam die gebruikt wordt om in te loggen.
+        example: "Ruud"
+      password:
+        required: true
+        type: string
+        description: Het wachtwoord dat gebruikt wordt om in te loggen.
+        example: "Upd8Pl0x"
+    responses:
+      200:
+        body:
+          application/string:
+            example: "886c219db12cd1748c0c051131ea087cf2a24478-1511260332390-1"
+      403:
+        body:
+          application/string:
+            example: "Invalid user credentials provided."
+      404:
+        body:
+          application/string:
+            example: "Not found."
